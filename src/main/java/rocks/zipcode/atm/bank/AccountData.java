@@ -36,9 +36,13 @@ public final class AccountData {
 
     @Override
     public String toString() {
+        String warning = balance + "";
+        if (balance < 0){
+            warning = warning + " You have overdrawn your account!";
+        }
         return "Account id: " + id + '\n' +
                 "Name: " + name + '\n' +
                 "Email: " + email + '\n' +
-                "Balance: " + balance;
+                "Balance: " + warning;
     }
 }
