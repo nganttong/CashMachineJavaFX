@@ -16,18 +16,21 @@ import javafx.scene.layout.FlowPane;
  */
 public class CashMachineApp extends Application {
 
-    private TextField field = new TextField();
+    private TextField accountField = new TextField();
+    private TextField depositField = new TextField();
+    private TextField withdrawField = new TextField();
     private CashMachine cashMachine = new CashMachine(new Bank());
 
     private Parent createContent() {
         VBox vbox = new VBox(10);
         vbox.setPrefSize(600, 600);
+        //add background using vbox.setStyle
 
         TextArea areaInfo = new TextArea();
 
         Button btnSubmit = new Button("Set Account ID");
         btnSubmit.setOnAction(e -> {
-            int id = Integer.parseInt(field.getText());
+            int id = Integer.parseInt(accountField.getText());
             cashMachine.login(id);
 
             areaInfo.setText(cashMachine.toString());
@@ -35,7 +38,7 @@ public class CashMachineApp extends Application {
 
         Button btnDeposit = new Button("Deposit");
         btnDeposit.setOnAction(e -> {
-            Float amount = Float.parseFloat(field.getText());
+            Float amount = Float.parseFloat(depositField.getText());
             cashMachine.deposit(amount);
 
             areaInfo.setText(cashMachine.toString());
@@ -43,26 +46,35 @@ public class CashMachineApp extends Application {
 
         Button btnWithdraw = new Button("Withdraw");
         btnWithdraw.setOnAction(e -> {
-            Float amount = Float.parseFloat(field.getText());
+            Float amount = Float.parseFloat(withdrawField.getText());
             cashMachine.withdraw(amount);
 
             areaInfo.setText(cashMachine.toString());
         });
 
-        Button btnExit = new Button("Exit");
+        Button btnExit = new Button("Switch Account");
         btnExit.setOnAction(e -> {
             cashMachine.exit();
 
             areaInfo.setText(cashMachine.toString());
         });
 
-        FlowPane flowpane = new FlowPane();
+        FlowPane flowpaneAccount = new FlowPane();
+        flowpaneAccount.getChildren().add(accountField);
+        flowpaneAccount.getChildren().add(btnSubmit);
 
-        flowpane.getChildren().add(btnSubmit);
-        flowpane.getChildren().add(btnDeposit);
-        flowpane.getChildren().add(btnWithdraw);
-        flowpane.getChildren().add(btnExit);
-        vbox.getChildren().addAll(field, flowpane, areaInfo);
+        FlowPane flowpaneDeposit = new FlowPane();
+        flowpaneDeposit.getChildren().add(depositField);
+        flowpaneDeposit.getChildren().add(btnDeposit);
+
+        FlowPane flowpaneWithdraw = new FlowPane();
+        flowpaneWithdraw.getChildren().add(withdrawField);
+        flowpaneWithdraw.getChildren().add(btnWithdraw);
+
+        FlowPane flowpaneSwitchUser = new FlowPane();
+        flowpaneSwitchUser.getChildren().add(btnExit);
+
+        vbox.getChildren().addAll(flowpaneAccount, flowpaneDeposit, flowpaneWithdraw, flowpaneSwitchUser, areaInfo);
         return vbox;
     }
 
