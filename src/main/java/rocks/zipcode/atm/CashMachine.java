@@ -55,7 +55,11 @@ public class CashMachine {
 
     @Override
     public String toString() {
-        return accountData != null ? accountData.toString() : "Enter a valid account ID and click submit.";
+        return accountData != null ? accountData.toString() : "Enter a valid account ID and click submit, please.";
+    }
+
+    public boolean hasLoadedValidAccount(){
+        return accountData != null;
     }
 
     private <T> void tryCall(Supplier<ActionResult<T> > action, Consumer<T> postAction) {

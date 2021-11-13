@@ -28,13 +28,6 @@ public class CashMachineApp extends Application {
 
         TextArea areaInfo = new TextArea();
 
-        Button btnSubmit = new Button("Set Account ID");
-        btnSubmit.setOnAction(e -> {
-            int id = Integer.parseInt(accountField.getText());
-            cashMachine.login(id);
-
-            areaInfo.setText(cashMachine.toString());
-        });
 
         Button btnDeposit = new Button("Deposit");
         btnDeposit.setOnAction(e -> {
@@ -43,6 +36,7 @@ public class CashMachineApp extends Application {
 
             areaInfo.setText(cashMachine.toString());
         });
+        btnDeposit.setDisable(true);
 
         Button btnWithdraw = new Button("Withdraw");
         btnWithdraw.setOnAction(e -> {
@@ -51,10 +45,29 @@ public class CashMachineApp extends Application {
 
             areaInfo.setText(cashMachine.toString());
         });
+        btnWithdraw.setDisable(true);
 
-        Button btnExit = new Button("Switch Account");
+        Button btnSubmit = new Button("Set Account ID");
+        btnSubmit.setOnAction(e -> {
+            int id = Integer.parseInt(accountField.getText());
+            cashMachine.login(id);
+
+            if(cashMachine.hasLoadedValidAccount()){
+                btnDeposit.setDisable(false);
+                btnWithdraw.setDisable(false);
+            }
+
+            areaInfo.setText(cashMachine.toString());
+
+        });
+
+
+        Button btnExit = new Button("Logout");
         btnExit.setOnAction(e -> {
             cashMachine.exit();
+
+            btnDeposit.setDisable(true);
+            btnWithdraw.setDisable(true);
 
             areaInfo.setText(cashMachine.toString());
         });
