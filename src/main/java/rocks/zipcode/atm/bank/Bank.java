@@ -14,23 +14,23 @@ public class Bank {
 
     public Bank() {
         accounts.put(1000, new BasicAccount(new AccountData(
-                1000, "Example 1", "example1@gmail.com", 500
+                1000, "Example 1", "example1@gmail.com", 500F
         )));
 
         accounts.put(2000, new PremiumAccount(new AccountData(
-                2000, "Example 2", "example2@gmail.com", 200
+                2000, "Example 2", "example2@gmail.com", 200F
         )));
 
         accounts.put(3000, new BasicAccount(new AccountData(
-                3000, "Cays Basic Account", "CaysBasicAccount@zipcode.com", -10000
+                3000, "Cays Basic Account", "CaysBasicAccount@zipcode.com", -10000F
         )));
 
         accounts.put(4000, new PremiumAccount(new AccountData(
-                4000, "Cays Prem Account", "CaysPremAccount@zipcode.com", 10000
+                4000, "Cays Prem Account", "CaysPremAccount@zipcode.com", 10000F
         )));
 
         accounts.put(5000, new PremiumAccount(new AccountData(
-                5000, "Sols Prem Account", "SolsPremAccount@zipcode.com", 1000000
+                5000, "Sols Prem Account", "SolsPremAccount@zipcode.com", 1000000F
         )));
     }
 
@@ -44,14 +44,14 @@ public class Bank {
         }
     }
 
-    public ActionResult<AccountData> deposit(AccountData accountData, int amount) {
+    public ActionResult<AccountData> deposit(AccountData accountData, Float amount) {
         Account account = accounts.get(accountData.getId());
         account.deposit(amount);
 
         return ActionResult.success(account.getAccountData());
     }
 
-    public ActionResult<AccountData> withdraw(AccountData accountData, int amount) {
+    public ActionResult<AccountData> withdraw(AccountData accountData, Float amount) {
         Account account = accounts.get(accountData.getId());
         boolean ok = account.withdraw(amount);
 

@@ -8,10 +8,9 @@ public final class AccountData {
     private final int id;
     private final String name;
     private final String email;
+    private final Float balance;
 
-    private final int balance;
-
-    AccountData(int id, String name, String email, int balance) {
+    AccountData(int id, String name, String email, Float balance) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -30,7 +29,7 @@ public final class AccountData {
         return email;
     }
 
-    public int getBalance() {
+    public Float getBalance() {
         return balance;
     }
 
