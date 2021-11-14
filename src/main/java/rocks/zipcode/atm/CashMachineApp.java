@@ -6,6 +6,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.PopupBuilder;
 import rocks.zipcode.atm.bank.Bank;
 import javafx.application.Application;
 import javafx.scene.Parent;
@@ -13,6 +14,9 @@ import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.layout.FlowPane;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author ZipCodeWilmington
@@ -43,7 +47,15 @@ public class CashMachineApp extends Application {
 
         Button btnCreateAccount = new Button("Create New Account");
         btnCreateAccount.setOnAction(event -> {
+        List<String> choices = new ArrayList<>();
+        choices.add("Basic");
+        choices.add("Premium");
 
+        ChoiceDialog<String> dialog = new ChoiceDialog<>("Basic", choices);
+        dialog.setTitle("New Account");
+
+        dialog.setContentText("Choose account type:");
+        dialog.show();
         });
 
         Button btnDeposit = new Button("Deposit");
@@ -123,7 +135,8 @@ public class CashMachineApp extends Application {
         FlowPane flowpaneSwitchUser = new FlowPane();
         flowpaneSwitchUser.getChildren().add(btnExit);
 
-        vbox.getChildren().addAll(menuBar,welcomeLabel,flowpaneAccount, flowpaneDeposit, flowpaneWithdraw, flowpaneSwitchUser, areaInfo);
+        vbox.getChildren().addAll(menuBar,welcomeLabel,btnCreateAccount, flowpaneAccount,
+                flowpaneDeposit, flowpaneWithdraw, flowpaneSwitchUser, areaInfo);
         return vbox;
     }
 
