@@ -1,8 +1,15 @@
 package rocks.zipcode.atm;
 
+import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
+import rocks.zipcode.atm.bank.Account;
 import rocks.zipcode.atm.bank.AccountData;
 import rocks.zipcode.atm.bank.Bank;
+import rocks.zipcode.atm.bank.BasicAccount;
 
+import java.awt.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -75,5 +82,43 @@ public class CashMachine {
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
+    }
+
+    public void createAccount(String accountType, String acctName, String acctEmail, Float initialDeposit) {
+        if (accountType.equals("Basic")) {
+            bank.createBasicAccount(acctName, acctEmail, initialDeposit);
+        } else if (accountType.equals("Premium")) {
+            bank.createPremiumAccount(acctName, acctEmail, initialDeposit);
+        }
+    }
+
+    public void generateAccountMenuLogin(Menu menu, TextArea textArea, Button btnDep, Button btnWith) {
+        for (int acctKey : bank.getAccounts().keySet()) {
+            AccountData acct = bank.getAccounts().get(acctKey).getAccountData();
+            updateMenuItems(menu, textArea, btnDep, btnWith, acctKey, acct);
+        }
+    }
+
+    public void attemptAccountLogin(Integer id, javafx.scene.control.TextArea areaInfo, javafx.scene.control.Button btnDeposit, Button btnWithdraw) {
+        this.login(id);
+        if (this.hasLoadedValidAccount()) {
+            btnDeposit.setDisable(false);
+            btnWithdraw.setDisable(false);
+        }
+
+        areaInfo.setText(this.toString());
+    }
+
+    public void addAccountToMenu(Menu accountMenu, TextArea areaInfo, Button btnDeposit, Button btnWithdraw) {
+        int key = bank.getAccounts().keySet().size();
+        AccountData newAccount = bank.getAccounts().get(key).getAccountData();
+        updateMenuItems(accountMenu, areaInfo, btnDeposit, btnWithdraw, key, newAccount);
+    }
+
+    private void updateMenuItems(Menu accountMenu, TextArea areaInfo, Button btnDeposit, Button btnWithdraw, int key, AccountData newAccount) {
+        MenuItem menuItem = new MenuItem(newAccount.getName());
+        menuItem.setOnAction(event ->
+                this.attemptAccountLogin(key, areaInfo, btnDeposit, btnWithdraw));
+        accountMenu.getItems().add(menuItem);
     }
 }

@@ -10,27 +10,31 @@ import java.util.Map;
  */
 public class Bank {
 
+    public Map<Integer, Account> getAccounts() {
+        return accounts;
+    }
+
     private Map<Integer, Account> accounts = new HashMap<>();
 
     public Bank() {
-        accounts.put(1000, new BasicAccount(new AccountData(
-                1000, "Example 1", "example1@gmail.com", 500F
+        accounts.put(1, new BasicAccount(new AccountData(
+                1, "Example 1", "example1@gmail.com", 500F
         )));
 
-        accounts.put(2000, new PremiumAccount(new AccountData(
-                2000, "Example 2", "example2@gmail.com", 200F
+        accounts.put(2, new PremiumAccount(new AccountData(
+                2, "Example 2", "example2@gmail.com", 200F
         )));
 
-        accounts.put(3000, new BasicAccount(new AccountData(
-                3000, "Cays Basic Account", "CaysBasicAccount@zipcode.com", -10000F
+        accounts.put(3, new BasicAccount(new AccountData(
+                3, "Cays Basic Account", "CaysBasicAccount@zipcode.com", -10000F
         )));
 
-        accounts.put(4000, new PremiumAccount(new AccountData(
-                4000, "Cays Prem Account", "CaysPremAccount@zipcode.com", 10000F
+        accounts.put(4, new PremiumAccount(new AccountData(
+                4, "Cays Prem Account", "CaysPremAccount@zipcode.com", 10000F
         )));
 
-        accounts.put(5000, new PremiumAccount(new AccountData(
-                5000, "Sols Prem Account", "SolsPremAccount@zipcode.com", 1000000F
+        accounts.put(5, new PremiumAccount(new AccountData(
+                5, "Sols Prem Account", "SolsPremAccount@zipcode.com", 1000000F
         )));
     }
 
@@ -42,6 +46,19 @@ public class Bank {
         } else {
             return ActionResult.fail("No account with id: " + id + "\nEnter a valid account ID and click submit.");
         }
+    }
+
+
+    public void createBasicAccount(String nameForBasic, String emailForBasic, Float initialDepositForBasic) {
+        int id = accounts.keySet().size();
+        System.out.println("Got id size");
+        accounts.put(id, new BasicAccount(new AccountData(id, nameForBasic, emailForBasic, initialDepositForBasic)));
+        System.out.println("added new account");
+    }
+
+    public void createPremiumAccount(String nameForPremium, String emailForPremium, Float initialDepositForPremium) {
+        int id = accounts.keySet().size();
+        accounts.put(id, new BasicAccount(new AccountData(id, nameForPremium, emailForPremium, initialDepositForPremium)));
     }
 
     public ActionResult<AccountData> deposit(AccountData accountData, Float amount) {

@@ -1,12 +1,18 @@
 package rocks.zipcode.atm;
 
 import javafx.geometry.Pos;
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.PopupBuilder;
+import javafx.util.converter.CurrencyStringConverter;
+import javafx.util.converter.FloatStringConverter;
+import javafx.util.converter.IntegerStringConverter;
+import javafx.util.converter.NumberStringConverter;
 import rocks.zipcode.atm.bank.Bank;
 import javafx.application.Application;
 import javafx.scene.Parent;
@@ -14,9 +20,11 @@ import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.layout.FlowPane;
+import sun.jvm.hotspot.oops.FloatField;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author ZipCodeWilmington
@@ -31,6 +39,9 @@ public class CashMachineApp extends Application {
 
     private Parent createContent() {
 
+        depositField.setTextFormatter(new TextFormatter<>(new FloatStringConverter()));
+        withdrawField.setTextFormatter(new TextFormatter<>(new FloatStringConverter()));
+
         welcomeLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
         welcomeLabel.setTextFill(Color.BEIGE);
 
@@ -43,20 +54,6 @@ public class CashMachineApp extends Application {
         //vbox.setStyle("-fx-background-image: url(\File:background.jpg\"););
 
         TextArea areaInfo = new TextArea();
-
-
-        Button btnCreateAccount = new Button("Create New Account");
-        btnCreateAccount.setOnAction(event -> {
-        List<String> choices = new ArrayList<>();
-        choices.add("Basic");
-        choices.add("Premium");
-
-        ChoiceDialog<String> dialog = new ChoiceDialog<>("Basic", choices);
-        dialog.setTitle("New Account");
-
-        dialog.setContentText("Choose account type:");
-        dialog.show();
-        });
 
         Button btnDeposit = new Button("Deposit");
         btnDeposit.setOnAction(e -> {
@@ -79,7 +76,7 @@ public class CashMachineApp extends Application {
         Button btnSubmit = new Button("Set Account ID");
         btnSubmit.setOnAction(e -> {
             int id = Integer.parseInt(accountField.getText());
-            attemptAccountLogin(id, areaInfo, btnDeposit, btnWithdraw);
+            cashMachine.attemptAccountLogin(id, areaInfo, btnDeposit, btnWithdraw);
         });
 
 
@@ -90,35 +87,66 @@ public class CashMachineApp extends Application {
             btnDeposit.setDisable(true);
             btnWithdraw.setDisable(true);
 
-
             areaInfo.setText(cashMachine.toString());
         });
 
-        Menu accountMenu = new Menu("Accounts");
-        MenuItem accountOne = new MenuItem("Account 1000");
-        accountOne.setOnAction(event -> {
-        attemptAccountLogin(1000, areaInfo, btnDeposit, btnWithdraw);
-        });
-        MenuItem accountTwo = new MenuItem("Account 2000");
-        accountTwo.setOnAction(event -> {
-            attemptAccountLogin(2000, areaInfo, btnDeposit, btnWithdraw);
-        });
-        MenuItem accountThree = new MenuItem("Account 3000");
-        accountThree.setOnAction(event -> {
-            attemptAccountLogin(3000, areaInfo, btnDeposit, btnWithdraw);
-        });
-        MenuItem accountFour = new MenuItem("Account 4000");
-        accountFour.setOnAction(event -> {
-            attemptAccountLogin(4000, areaInfo, btnDeposit, btnWithdraw);
-        });
+        // Accounts Menu Stuff
 
-        accountMenu.getItems().addAll(accountOne, accountTwo, accountThree, accountFour);
+        Menu accountMenu = new Menu("Accounts");
+        cashMachine.generateAccountMenuLogin(accountMenu, areaInfo, btnDeposit, btnWithdraw);
 
         MenuBar menuBar = new MenuBar(accountMenu);
         //sets position of menu bar
         menuBar.setTranslateX(0);
         menuBar.setTranslateY(0);
 
+
+        Button btnCreateAccount = new Button("Create New Account");
+        btnCreateAccount.setOnAction(event -> {
+            List<String> choices = new ArrayList<>();
+            choices.add("Basic");
+            choices.add("Premium");
+
+            ChoiceDialog<String> dialog = new ChoiceDialog<>("Basic", choices);
+            dialog.setTitle("New Account");
+            dialog.setContentText("Choose account type:");
+            Optional<String> result = dialog.showAndWait();
+
+            if (result.isPresent()){
+                String accountType = result.get();
+
+                Stage accountStage = new Stage();
+
+                TextField newAccountName = new TextField();
+                TextField newAccountEmail = new TextField();
+                TextField newAccountBalance = new TextField();
+                newAccountBalance.setTextFormatter(new TextFormatter<>(new FloatStringConverter()));
+
+                Label nameLabel = new Label("Name: ");
+                Label emailLabel = new Label("Email: ");
+                Label balanceLabel = new Label("Deposit Amount: ");
+
+                Button button = new Button("Create new account.");
+                button.setTranslateX(250);
+                button.setTranslateY(75);
+
+                HBox box = new HBox(nameLabel, newAccountName, emailLabel, newAccountEmail, balanceLabel, newAccountBalance);
+
+                // TODO -- set styling for this dialog box
+                Button newAccountButton = new Button("Create");
+                Group newAccountStuff = new Group(box, newAccountButton);
+                accountStage.setScene(new Scene(newAccountStuff));
+                accountStage.show();
+                newAccountButton.setOnAction(e -> {
+                    //Retrieving data
+                    Float createAccountBalance = Float.parseFloat(newAccountBalance.getText());
+                    cashMachine.createAccount(accountType, newAccountName.getText(), newAccountEmail.getText(), createAccountBalance);
+                    cashMachine.addAccountToMenu(accountMenu, areaInfo, btnDeposit, btnWithdraw);
+                    accountStage.hide();
+                });
+
+            }
+        });
 
         FlowPane flowpaneAccount = new FlowPane();
         flowpaneAccount.getChildren().add(accountField);
@@ -148,15 +176,5 @@ public class CashMachineApp extends Application {
 
     public static void main(String[] args) {
         launch(args);
-    }
-
-    private void attemptAccountLogin(Integer id, TextArea areaInfo, Button btnDeposit, Button btnWithdraw) {
-        cashMachine.login(id);
-        if(cashMachine.hasLoadedValidAccount()){
-            btnDeposit.setDisable(false);
-            btnWithdraw.setDisable(false);
-        }
-
-        areaInfo.setText(cashMachine.toString());
     }
 }
