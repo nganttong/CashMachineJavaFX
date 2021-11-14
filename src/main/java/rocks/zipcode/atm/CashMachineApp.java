@@ -1,12 +1,14 @@
 package rocks.zipcode.atm;
 
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import rocks.zipcode.atm.bank.Bank;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.layout.FlowPane;
@@ -20,14 +22,36 @@ public class CashMachineApp extends Application {
     private TextField depositField = new TextField();
     private TextField withdrawField = new TextField();
     private CashMachine cashMachine = new CashMachine(new Bank());
+    private Label welcomeLabel = new Label("Welcome to ZipCloudBank!");
 
     private Parent createContent() {
+
+        welcomeLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
+
+
         VBox vbox = new VBox(10);
         vbox.setPrefSize(600, 600);
+        vbox.setAlignment(Pos.TOP_CENTER);
         //add background using vbox.setStyle
+        vbox.setStyle("-fx-background-color:c5b9cd");
 
         TextArea areaInfo = new TextArea();
 
+        Menu accountMenu = new Menu("Accounts");
+        MenuItem accountOne = new MenuItem("Account 1000");
+        MenuItem accountTwo = new MenuItem("Account 2000");
+        MenuItem accountThree = new MenuItem("Account 3000");
+        MenuItem accountFour = new MenuItem("Account 4000");
+        accountMenu.getItems().addAll(accountOne, accountTwo, accountThree, accountFour);
+
+        MenuBar menuBar = new MenuBar(accountMenu);
+        //sets position of menu bar
+        menuBar.setTranslateX(0);
+        menuBar.setTranslateY(0);
+
+
+
+        Button createAccount = new Button("Create New Account");
 
         Button btnDeposit = new Button("Deposit");
         btnDeposit.setOnAction(e -> {
@@ -69,8 +93,10 @@ public class CashMachineApp extends Application {
             btnDeposit.setDisable(true);
             btnWithdraw.setDisable(true);
 
+
             areaInfo.setText(cashMachine.toString());
         });
+
 
         FlowPane flowpaneAccount = new FlowPane();
         flowpaneAccount.getChildren().add(accountField);
@@ -87,7 +113,7 @@ public class CashMachineApp extends Application {
         FlowPane flowpaneSwitchUser = new FlowPane();
         flowpaneSwitchUser.getChildren().add(btnExit);
 
-        vbox.getChildren().addAll(flowpaneAccount, flowpaneDeposit, flowpaneWithdraw, flowpaneSwitchUser, areaInfo);
+        vbox.getChildren().addAll(menuBar,welcomeLabel,flowpaneAccount, flowpaneDeposit, flowpaneWithdraw, flowpaneSwitchUser, areaInfo);
         return vbox;
     }
 
