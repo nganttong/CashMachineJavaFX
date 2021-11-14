@@ -41,7 +41,10 @@ public class CashMachineApp extends Application {
         TextArea areaInfo = new TextArea();
 
 
-        Button createAccount = new Button("Create New Account");
+        Button btnCreateAccount = new Button("Create New Account");
+        btnCreateAccount.setOnAction(event -> {
+
+        });
 
         Button btnDeposit = new Button("Deposit");
         btnDeposit.setOnAction(e -> {
@@ -103,7 +106,6 @@ public class CashMachineApp extends Application {
         //sets position of menu bar
         menuBar.setTranslateX(0);
         menuBar.setTranslateY(0);
-
 
 
         FlowPane flowpaneAccount = new FlowPane();
