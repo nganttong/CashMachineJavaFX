@@ -2,17 +2,13 @@ package rocks.zipcode.atm;
 
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.stage.PopupBuilder;
-import javafx.util.converter.CurrencyStringConverter;
 import javafx.util.converter.FloatStringConverter;
-import javafx.util.converter.IntegerStringConverter;
-import javafx.util.converter.NumberStringConverter;
 import rocks.zipcode.atm.bank.Bank;
 import javafx.application.Application;
 import javafx.scene.Parent;
@@ -20,7 +16,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.layout.FlowPane;
-import sun.jvm.hotspot.oops.FloatField;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,10 +125,25 @@ public class CashMachineApp extends Application {
                 button.setTranslateX(250);
                 button.setTranslateY(75);
 
-                HBox box = new HBox(nameLabel, newAccountName, emailLabel, newAccountEmail, balanceLabel, newAccountBalance);
+                GridPane gridpane = new GridPane();
+                gridpane.add(nameLabel, 0, 0, 1, 1);
+                gridpane.add(newAccountName, 1, 0, 1, 1);
+                gridpane.add(emailLabel, 0, 1, 1, 1);
+                gridpane.add(newAccountEmail, 1, 1, 1, 1);
+                gridpane.add(balanceLabel, 0, 2, 1, 1);
+                gridpane.add(newAccountBalance, 1, 2, 1, 1);
+                gridpane.setHgap(10);
+                gridpane.setVgap(10);
+
+                HBox box = new HBox(gridpane);
+
+                box.setMinWidth(300);
+                box.setMinHeight(200);
 
                 // TODO -- set styling for this dialog box
                 Button newAccountButton = new Button("Create");
+                newAccountButton.setTranslateY(200);
+                newAccountButton.setTranslateX(200);
                 Group newAccountStuff = new Group(box, newAccountButton);
                 accountStage.setScene(new Scene(newAccountStuff));
                 accountStage.show();
