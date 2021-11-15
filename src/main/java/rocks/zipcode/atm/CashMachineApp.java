@@ -41,7 +41,6 @@ public class CashMachineApp extends Application {
         withdrawField.setTextFormatter(new TextFormatter<>(new FloatStringConverter()));
 
         welcomeLabel.setFont(Font.font("Marker Felt", FontWeight.LIGHT, 25));
-
         welcomeLabel.setTextFill(Color.BLACK);
         Reflection r = new Reflection();
         r.setFraction(0.7F);
@@ -49,7 +48,6 @@ public class CashMachineApp extends Application {
 
         Integer widthOfVbox = 600;
         Integer heightOfVbox = 600;
-
         VBox vbox = new VBox(10);
         vbox.setPrefSize(widthOfVbox, heightOfVbox);
         vbox.setAlignment(Pos.TOP_CENTER);
@@ -69,9 +67,9 @@ public class CashMachineApp extends Application {
                 backgroundSize);
         vbox.setBackground(new Background(myBI));
 
-
         TextArea areaInfo = new TextArea();
         areaInfo.setOpacity(.85);
+        areaInfo.setDisable(true);
 
         Button btnDeposit = new Button("Deposit");
         btnDeposit.setOnAction(e -> {

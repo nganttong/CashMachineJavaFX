@@ -104,6 +104,7 @@ public class CashMachine {
         if (this.hasLoadedValidAccount()) {
             btnDeposit.setDisable(false);
             btnWithdraw.setDisable(false);
+            areaInfo.setDisable(false);
         }
 
         areaInfo.setText(this.toString());
