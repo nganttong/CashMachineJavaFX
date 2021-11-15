@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.effect.Reflection;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -39,8 +40,12 @@ public class CashMachineApp extends Application {
         depositField.setTextFormatter(new TextFormatter<>(new FloatStringConverter()));
         withdrawField.setTextFormatter(new TextFormatter<>(new FloatStringConverter()));
 
-        welcomeLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
+        welcomeLabel.setFont(Font.font("Marker Felt", FontWeight.LIGHT, 25));
+
         welcomeLabel.setTextFill(Color.BLACK);
+        Reflection r = new Reflection();
+        r.setFraction(0.7F);
+        welcomeLabel.setEffect(r);
 
         Integer widthOfVbox = 600;
         Integer heightOfVbox = 600;
