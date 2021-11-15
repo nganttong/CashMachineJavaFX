@@ -18,23 +18,23 @@ public class Bank {
 
     public Bank() {
         accounts.put(1, new BasicAccount(new AccountData(
-                1, "Example 1", "example1@gmail.com", 500F
+                1, "Cay Tong", "CayT1@gmail.com", 500F
         )));
 
         accounts.put(2, new PremiumAccount(new AccountData(
-                2, "Example 2", "example2@gmail.com", 200F
+                2, "Jimmy Crowley", "JimmyC@gmail.com", 200F
         )));
 
         accounts.put(3, new BasicAccount(new AccountData(
-                3, "Cays Basic Account", "CaysBasicAccount@zipcode.com", -10000F
+                3, "Trinh Tong", "TrinhT@zipcode.com", -10000F
         )));
 
         accounts.put(4, new PremiumAccount(new AccountData(
-                4, "Cays Prem Account", "CaysPremAccount@zipcode.com", 10000F
+                4, "Relik Rajman", "RelikR@zipcode.com", 10000F
         )));
 
         accounts.put(5, new PremiumAccount(new AccountData(
-                5, "Sols Prem Account", "SolsPremAccount@zipcode.com", 1000000F
+                5, "Sol", "SolsPremAccount@zipcode.com", 1000000F
         )));
     }
 

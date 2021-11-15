@@ -99,7 +99,7 @@ public class CashMachine {
         }
     }
 
-    public void attemptAccountLogin(Integer id, javafx.scene.control.TextArea areaInfo, javafx.scene.control.Button btnDeposit, Button btnWithdraw) {
+    public void attemptAccountLogin(Integer id, TextArea areaInfo, Button btnDeposit, Button btnWithdraw) {
         this.login(id);
         if (this.hasLoadedValidAccount()) {
             btnDeposit.setDisable(false);

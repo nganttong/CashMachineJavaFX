@@ -1,21 +1,23 @@
 package rocks.zipcode.atm;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.StageStyle;
 import javafx.util.converter.FloatStringConverter;
 import rocks.zipcode.atm.bank.Bank;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.scene.layout.FlowPane;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,17 +40,33 @@ public class CashMachineApp extends Application {
         withdrawField.setTextFormatter(new TextFormatter<>(new FloatStringConverter()));
 
         welcomeLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
-        welcomeLabel.setTextFill(Color.BEIGE);
+        welcomeLabel.setTextFill(Color.BLACK);
 
+        Integer widthOfVbox = 600;
+        Integer heightOfVbox = 600;
 
         VBox vbox = new VBox(10);
-        vbox.setPrefSize(600, 600);
+        vbox.setPrefSize(widthOfVbox, heightOfVbox);
         vbox.setAlignment(Pos.TOP_CENTER);
         //add background using vbox.setStyle
-        vbox.setStyle("-fx-background-color:c5b9cd");
-        //vbox.setStyle("-fx-background-image: url(\File:background.jpg\"););
+        Image rawBackground = new Image
+                (this.getClass().getResource("/windowsXP.jpg").toString(),false);
+        BackgroundSize backgroundSize = new BackgroundSize(BackgroundSize.AUTO,
+                BackgroundSize.AUTO,
+                false,
+                false,
+                true,
+                true);
+        BackgroundImage myBI = new BackgroundImage(rawBackground,
+                BackgroundRepeat.REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.DEFAULT,
+                backgroundSize);
+        vbox.setBackground(new Background(myBI));
+
 
         TextArea areaInfo = new TextArea();
+        areaInfo.setOpacity(.85);
 
         Button btnDeposit = new Button("Deposit");
         btnDeposit.setOnAction(e -> {
@@ -68,6 +86,7 @@ public class CashMachineApp extends Application {
         });
         btnWithdraw.setDisable(true);
 
+
         Button btnSubmit = new Button("Set Account ID");
         btnSubmit.setOnAction(e -> {
             int id = Integer.parseInt(accountField.getText());
@@ -84,6 +103,7 @@ public class CashMachineApp extends Application {
 
             areaInfo.setText(cashMachine.toString());
         });
+
 
         // Accounts Menu Stuff
 
@@ -104,6 +124,11 @@ public class CashMachineApp extends Application {
 
             ChoiceDialog<String> dialog = new ChoiceDialog<>("Basic", choices);
             dialog.setTitle("New Account");
+            dialog.setHeaderText("");
+            ImageView logo = new ImageView(this.getClass().getResource("/Zlogo.jpeg").toString());
+            logo.setPreserveRatio(true);
+            logo.setFitHeight(30);
+            dialog.setGraphic(logo);
             dialog.setContentText("Choose account type:");
             Optional<String> result = dialog.showAndWait();
 
@@ -136,9 +161,14 @@ public class CashMachineApp extends Application {
                 gridpane.setVgap(10);
 
                 HBox box = new HBox(gridpane);
-
+//                box.setStyle("-fx-background-color:c5b9cd");
+                box.setBackground(new Background(myBI));
                 box.setMinWidth(300);
                 box.setMinHeight(200);
+
+                nameLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+                emailLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+                balanceLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
 
                 // TODO -- set styling for this dialog box
                 Button newAccountButton = new Button("Create");
